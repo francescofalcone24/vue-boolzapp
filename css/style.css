@@ -1,0 +1,214 @@
+/*************** COMMON/CONTAINER *****************/
+/* *{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+} */
+body {
+    height: calc(100vh - 1rem);
+    width: 100%;
+    background: linear-gradient(  #009688 17%,#DADBD4 17% );    background-repeat: no-repeat;
+    background-size: contain;
+    font-family: sans-serif;
+}
+
+.hover:hover{
+    background-color: rgb(192, 188, 188);
+}
+
+.my_fs{
+    font-size: 0.6rem;
+}
+
+.my_fs_l{
+    font-size: 0.8rem;
+}
+
+.hide{
+    display: none;
+}
+
+.unset{
+    display: unset;
+}
+
+.c-gray{
+    color: gray;
+}
+
+img {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+}
+.card-element {
+    width: 100%;
+    height: 3rem;
+}
+
+i{
+    color: gray;
+}
+
+i:hover{
+    color: green;
+}
+
+/************* HEADER *************/
+
+
+
+
+
+/************* MAIN *************/
+
+.contenitore {
+    width: 80%;
+    max-width: 1210px;
+    height: calc(100vh - 4rem);
+    margin: 1rem auto;
+    background-color:white;
+}
+
+/* sinistra */
+.left-side{
+    width: 35%;
+}
+
+.card-notifiche {
+    width: 100%;
+    height: 3.5rem;
+}
+
+.backg-white{
+    background-color: white;
+    border-radius: 50%;
+}
+
+.icona-notifiche{
+    font-size: 1.5rem;
+    width: 100%;
+}
+
+.div-img-lista-contatti{
+    width: 12%;
+}
+
+.div-nome-lista-contatti{
+    width: 78%;
+}
+
+
+/* destra */
+.right-side{
+    width: 65%;
+}
+.chat-container{
+    background-image: url(../img/mine.jpg);
+    height: calc(100vh - 10rem);
+    width: 100%;
+}
+.div-img-chat-selezionata{
+    width: 10%;
+}
+.div-nome-chat-selezionata{
+    width: 61%;
+}
+
+.input-messaggio-bar{
+    width: 87%;
+}
+
+.smile{
+    width: 5%;
+}
+
+.microfon{
+    width: 8%;
+}
+
+.deleteMsgRight{
+    position: absolute;
+    top: 100%;
+    right: 100%;
+    font-size: 0.7rem;
+}
+
+.deleteMsgLeft{
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    font-size: 0.7rem;
+}
+
+
+/************* FOOTER *************/
+
+
+
+
+
+/************* RESPONSIVE *************/
+@media screen and (max-width: 1200px) {}
+
+@media screen and (max-width: 992px) {
+    .div-img-lista-contatti{
+        width: 15%;
+    }
+    .div-nome-lista-contatti{
+        width: 75%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .left-side{
+        width: 100%;
+    }
+    .div-img-lista-contatti{
+        width: 15%;
+    }
+    .div-nome-lista-contatti{
+        width: 56%;
+    }
+    .right-side{
+        width: 100%;
+    }
+    img {
+        width:32px;
+        height:32px;
+    }
+    .input-messaggio-bar{
+        width: 72%;
+    }
+    .smile{
+        width: 10%;
+    }   
+    .microfon{
+        width: 18%;
+    }
+    .div-img-chat-selezionata{
+        width: 15%;
+    }
+    .div-nome-chat-selezionata{
+        width: 56%;
+    }
+
+    .div-img-lista-contatti{
+        width: 7%;
+    }
+    .div-nome-lista-contatti{
+        width: 83%;
+    }
+
+
+    
+}
+
+@media screen and (max-width: 576px) {
+    .div-img-lista-contatti{
+        width: 10%;
+    }
+    .div-nome-lista-contatti{
+        width: 80%;
+    }
+}

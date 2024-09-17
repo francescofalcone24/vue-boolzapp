@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boolzapp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"
+        integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="https://unpkg.com/vue@3.4.27/dist/vue.global.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+
+        <div class="contenitore d-flex">
+
+            <!-- CONTENITORE DI SINISTRA -->
+            <div class="left-side d-md-block" :class="hideOrShowList">
+
+                <!-- card profilo persolnale -->
+                <div class="card-element d-flex">
+                    <div class="p-1" style="width: 10%;">
+                        <img src="./img/avatar_io.jpg" alt="">
+                    </div>
+                    <div class="card-name d-flex align-items-center" style="width: 45%;">
+                        <h6 class="p-md-2 ms-2 mb-0"><strong>Francesco</strong></h6>
+                    </div>
+                    <div class="icons text-end d-flex align-items-center" style="width: 45%;">
+                        <div class="text-end" style="width: 100%;">
+                            <i class="mx-2 fa-solid fa-circle-notch"></i>
+                            <i class="mx-2 fa-solid fa-message"></i>
+                            <i class="mx-2 fa-solid fa-ellipsis-vertical"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- notifiche -->
+                <div class="card-notifiche d-flex bg-info">
+                    <div class="d-flex align-items-center text-center backg-white" style="width: 14%;">
+                        <i class="pt-1 icona-notifiche fa-solid fa-bell-slash"></i>
+                    </div>
+                    <div class="card-name p-1" style="width: 86%;">
+                        <h6 class="ms-1 mb-0 mt-2 my_fs_l">Ricevi notifiche di nuovi messaggi</h6>
+                        <p><a class="ms-1 mb-0 my_fs">Attiva notifiche desktop</a></p>
+                    </div>
+                </div>
+
+                <!-- barra 'cerca' -->
+                <div class="bg-light p-1">
+                    <form class="d-flex" style="width: 100%;" role="search">
+                        <span><i class="p-1 fs-5 fa-solid fa-magnifying-glass"></i></span>
+                        <input @input="resetIndex()" v-model="searchInput" class="border border-0 form-control"
+                            type="search" placeholder="Cerca o inizia una nuova chat" aria-label="Search">
+                    </form>
+                </div>
+
+                <!-- lista chat contatti -->
+                <div class="overflow-auto">
+
+
+                    <template v-for="elemento, i in filtraContatti">
+                        <div @click="getUtenteCliccato(i)" class="hover card-element d-flex border-bottom">
+
+                            <div class="p-1 div-img-lista-contatti">
+                                <img :src="elemento.avatar" alt="">
+                            </div>
+                            <div class="card-name py-2 div-nome-lista-contatti overflow-hidden">
+                                <h6 class="ms-1 mb-0"><strong>{{elemento.name}}</strong></h6>
+                                <p v-if="lastElement(elemento.messages) !== undefined" class="c-gray ms-1 mb-0 my_fs_l">
+                                    {{
+                                    lastElement(elemento.messages).message }}</p>
+                            </div>
+                            <div class="icons text-end" style="width: 10%;">
+                                <div class="text-end" style="width: 100%;">
+                                    <span v-if="lastElement(elemento.messages) !== undefined"
+                                        class="c-gray my_fs pe-1">{{ lastElement(elemento.messages).date }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+
+                </div>
+
+            </div>
+
+            <!-- CONTENITORE DI DESTRA -->
+            <div class="right-side d-md-block" :class="hideOrShowChat">
+
+                <!-- card chat selezionata -->
+                <div class="card-element d-flex">
+                    <template v-if="indexClicked !== ''">
+                        <div class="picture p-1 text-center align-items-center div-img-chat-selezionata">
+                            <span @click="backToTheChat()" class="d-md-none"><i
+                                    class=" fa-solid fa-caret-left"></i></span>
+                            <img :src="imgClicked" alt="">
+                        </div>
+                        <div class="card-name pt-2 div-nome-chat-selezionata">
+                            <h6 class="mb-0"><strong>{{nameClicked}}</strong></h6>
+                            <p class="mb-0 my_fs">Ultimo accesso oggi alle
+                                {{getCurrentTime()}}</p>
+                        </div>
+                        <div class="icons text-end d-flex align-items-center" style="width: 29%;">
+                            <div class="text-end" style="width: 100%;">
+                                <i class="mx-2 fa-solid fa-circle-notch"></i>
+                                <i class="mx-2 fa-solid fa-message"></i>
+                                <i class="mx-2 fa-solid fa-ellipsis-vertical"></i>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- chat selezionata -->
+                <div class="chat-container overflow-auto p-5 position-relative">
+
+                    <div v-if="indexClicked !== ''" class="text-center position-absolute top-0 start-50 ">
+                        <span style="--bs-bg-opacity: .5;" class="my_fs bg-light p-1 rounded">{{new
+                            Date().toLocaleString('default', { weekday: 'short' })}}
+                            {{new Date().getDate()}} {{new Date().toLocaleString('default', { month: 'long' })}}</span>
+                    </div>
+
+                    <!-- messaggi -->
+                    <div v-if="indexClicked !== ''" v-for="persona,i in filtraContatti[indexClicked].messages"
+                        class=" mb-2 row">
+
+                        <div v-if="persona.status == 'sent'"
+                            class="position-relative bg-success p-2 rounded-start rounded-top col-6 offset-6 col-md-4 offset-md-8"
+                            style="--bs-bg-opacity: .5;">
+                            {{persona.message}}
+                            <div class="text-end my_fs">{{persona.date}}</div>
+                            <span class="dropdown">
+                                <button class="btn dropdown-toggle p-0" type="button" id="dropdownMenu2"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    <li><button class="dropdown-item" type="button">Message
+                                            Info</button></li>
+                                    <li><button class="dropdown-item" type="button"
+                                            @click="cancellaMsg(indexClicked, i)">Delete
+                                            Message</button></li>
+                                </ul>
+                            </span>
+                        </div>
+
+                        <div v-else="persona.status == 'recived'"
+                            class="position-relative bg-light p-2 rounded-end rounded-top col-6 col-md-4"
+                            style="--bs-bg-opacity: .6;">
+                            {{persona.message}}
+                            <div class="text-end my_fs">{{persona.date}}</div>
+                            <span class="dropdown">
+                                <button class="btn dropdown-toggle p-0" type="button" id="dropdownMenu2"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    <li><button class="dropdown-item" type="button">Message
+                                            Info</button></li>
+                                    <li><button class="dropdown-item" type="button"
+                                            @click="cancellaMsg(indexClicked, i)">Delete
+                                            Message</button></li>
+                                </ul>
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- input text messaggio -->
+                <div class="input-message p-1">
+
+                    <div class="bg-light p-1 d-flex align-items-center">
+                        <form class="d-flex" style="width: 100%;">
+                            <div class="smile">
+                                <span><i class="p-1 mt-1 fs-5 fa-regular fa-face-smile"></i></span>
+                            </div>
+                            <div class="input-messaggio-bar">
+                                <input style="width: 100%;" class="border border-0 form-control" type="search"
+                                    placeholder="Scrivi un messaggio" aria-label="Search" v-model="messageInput">
+                            </div>
+                            <div class="text-end microfon">
+                                <span><i @click="sendMessage()" v-if="messageInput!==''"
+                                        class="p-1 mt-1 ms-1 fs-5 fa-regular fa-paper-plane"></i>
+                                    <i @click="getCurrentTime()"
+                                        class="p-1 mt-1 fs-5 fa-solid fa-microphone"></i></span>
+                            </div>
+
+                        </form>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <script src="./js/main.js"></script>
+</body>
+
+</html>
